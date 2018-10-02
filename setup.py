@@ -12,17 +12,17 @@ def read(fname):
 requires = ['']
 
 
-setup(name='Savoir',
+setup(name='multichaincli',
     version='1.0.5',
-    description='A python wrapper for Multichain Json-RPC API ',
-    long_description=read('README.mkdn'),
+    description='A python binding for Multichain Json-RPC API',
+    long_description=read('README.md'),
     license="BSD",
-    author='Federico Cardoso',
-    author_email='federico.cardoso@dxmarkets.com',
-    url='https://github.com/DXMarkets/Savoir',
+    author='Alex Khaerov, Federico Cardoso',
+    author_email='alex.khaerov@chainstack.com, federico.cardoso@dxmarkets.com',
+    url='https://github.com/chainstack/multichain-python-sdk',
     keywords='multichain python blockchain jsonrpc',
     packages=find_packages(),
     install_requires=[
-        'requests',
+        'requests==2.19.1',
     ],
     )

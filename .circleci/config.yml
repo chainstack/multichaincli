@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
+
+      - run:
+          name: install python dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            make dev
+
+  publish:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Makefile" }}
+
+      - run:
+          name: init .pypirc
+          command: |
+            echo -e "[server-login]" >> ~/.pypirc
+            echo -e "username = ${PYPI_USER}" >> ~/.pypirc
+            echo -e "password = ${PYPI_PASSWORD}" >> ~/.pypirc
+
+      - run:
+          name: create and publish packages
+          command: |
+            make package
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - publish:
+          context: "PyPI account"
+          filters:
+            branches:
+              only: master

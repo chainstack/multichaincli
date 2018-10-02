@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 import requests
 import json
 from base64 import b64encode
 import logging
 
-log = logging.getLogger('Savoir')
+log = logging.getLogger(__name__)
 
 
-class Savoir():
+class Multichain():
     __id_count = 0
 
     def __init__(self,
@@ -26,7 +27,7 @@ class Savoir():
             ['Basic', b64encode(':'.join([rpcuser, rpcpasswd]).encode()).decode()]
         )
         self.__headers = {'Host': self.__rpchost,
-            'User-Agent': 'Savoir v0.1',
+            'User-Agent': 'Multichain python binding',
             'Authorization': self.__auth_header,
             'Content-type': 'application/json'
             }
@@ -38,7 +39,7 @@ class Savoir():
             raise AttributeError
         if self.__rpc_call is not None:
             name = "%s.%s" % (self.__rpc_call, name)
-        return Savoir(self.__rpcuser,
+        return Multichain(self.__rpcuser,
             self.__rpcpasswd,
             self.__rpchost,
             self.__rpcport,
@@ -46,12 +47,12 @@ class Savoir():
             name)
 
     def __call__(self, *args):
-        Savoir.__id_count += 1
+        Multichain.__id_count += 1
         postdata = {'chain_name': self.__chainname,
             'version': '1.1',
             'params': args,
             'method': self.__rpc_call,
-            'id': Savoir.__id_count}
+            'id': Multichain.__id_count}
         url = ''.join(['http://', self.__rpchost, ':', self.__rpcport])
         encoded = json.dumps(postdata)
         log.info("Request: %s" % encoded)
