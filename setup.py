@@ -13,7 +13,7 @@ requires = ['']
 
 
 setup(name='multichaincli',
-    version='1.0.5',
+    version='1.0.6',
     description='A python binding for Multichain Json-RPC API',
     long_description=read('README.md'),
     license="BSD",
