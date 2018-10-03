@@ -1,4 +1,7 @@
 # multichaincli
+[![CircleCI](https://circleci.com/gh/chainstack/multichaincli/tree/master.svg?style=svg)](https://circleci.com/gh/chainstack/multichaincli/tree/master)
+[![PyPI version](https://badge.fury.io/py/multichaincli.svg)](https://badge.fury.io/py/multichaincli)
+
 _python binding for Multichain, supports version 2_
 ## Description
 
