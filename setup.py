@@ -9,11 +9,9 @@ from setuptools import setup, find_packages
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-requires = ['']
-
 
 setup(name='multichaincli',
-    version='1.0.6',
+    version='1.0.7',
     description='A python binding for Multichain Json-RPC API',
     long_description=read('README.md'),
     license="BSD",
@@ -23,6 +21,6 @@ setup(name='multichaincli',
     keywords='multichain python blockchain jsonrpc',
     packages=find_packages(),
     install_requires=[
-        'requests==2.19.1',
+        'requests>=2.20.0',
     ],
     )
