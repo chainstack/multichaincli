@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import requests
 import json
-from base64 import b64encode
 import logging
+import requests
+from base64 import b64encode
 
 log = logging.getLogger(__name__)
 
@@ -11,13 +11,13 @@ class Multichain():
     __id_count = 0
 
     def __init__(self,
-        rpcuser,
-        rpcpasswd,
-        rpchost,
-        rpcport,
-        chainname,
-        rpc_call=None
-    ):
+                 rpcuser,
+                 rpcpasswd,
+                 rpchost,
+                 rpcport,
+                 chainname,
+                 rpc_call=None
+                 ):
         self.__rpcuser = rpcuser
         self.__rpcpasswd = rpcpasswd
         self.__rpchost = rpchost
@@ -27,10 +27,10 @@ class Multichain():
             ['Basic', b64encode(':'.join([rpcuser, rpcpasswd]).encode()).decode()]
         )
         self.__headers = {'Host': self.__rpchost,
-            'User-Agent': 'Multichain python binding',
-            'Authorization': self.__auth_header,
-            'Content-type': 'application/json'
-            }
+                          'User-Agent': 'Multichain python binding',
+                          'Authorization': self.__auth_header,
+                          'Content-type': 'application/json'
+                          }
         self.__rpc_call = rpc_call
 
     def __getattr__(self, name):
@@ -40,20 +40,21 @@ class Multichain():
         if self.__rpc_call is not None:
             name = "%s.%s" % (self.__rpc_call, name)
         return Multichain(self.__rpcuser,
-            self.__rpcpasswd,
-            self.__rpchost,
-            self.__rpcport,
-            self.__chainname,
-            name)
+                          self.__rpcpasswd,
+                          self.__rpchost,
+                          self.__rpcport,
+                          self.__chainname,
+                          name)
 
     def __call__(self, *args):
         Multichain.__id_count += 1
         postdata = {'chain_name': self.__chainname,
-            'version': '1.1',
-            'params': args,
-            'method': self.__rpc_call,
-            'id': Multichain.__id_count}
-        url = ''.join(['http://', self.__rpchost, ':', self.__rpcport])
+                    'version': '2.0',
+                    'params': args,
+                    'method': self.__rpc_call,
+                    'id': Multichain.__id_count}
+        protocol = 'https' if int(self.__rpcport) == 443 else 'http'
+        url = '{0}://{1}:{2}'.format(protocol, self.__rpchost, self.__rpcport)
         encoded = json.dumps(postdata)
         log.info("Request: %s" % encoded)
         r = requests.post(url, data=encoded, headers=self.__headers)
